@@ -1,6 +1,6 @@
 # genetable
 
-The goal of genetable is to provide some utility functions for making a database table of gene boundary definitions. For now, it is focused on GeneCode gene definitions.
+The goal of genetable is to provide some utility functions for making a database table of gene boundary definitions. For now, it is focused on GeneCode gene definitions, as defined in the GENCODE .gtf files, such as availble at https://www.gencodegenes.org/releases/
 
 ## Installation
 

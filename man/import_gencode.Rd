@@ -2,19 +2,27 @@
 % Please edit documentation in R/import-gencode.r
 \name{import_gencode}
 \alias{import_gencode}
-\title{Load a gencode file.}
+\title{Get the features with attributes of interest from a gencode .gtf file}
 \usage{
-import_gencode(path)
+import_gencode(path, feature = "transcript", attribute = "tag basic")
 }
 \arguments{
 \item{path}{Path to the gencode file.}
+
+\item{feature}{The feature type of interest. Must be one of {gene, 
+transcript, exon, CDS, UTR, start_codon, stop_codon, Selenocysteine}. 
+Default = "transcript"}
+
+\item{attribute}{The attribute of interest (from the 9th column of the gtf 
+file). Default = "tag basic"}
 }
 \value{
 A data frame containing the rows from the file that match the 
-specified feature and contain the given attribute.
+  specified feature and contain the given attribute.
 }
 \description{
-Load a gencode file.
+The gtf file format is described at 
+https://www.gencodegenes.org/data_format.html
 }
 \examples{
 \dontrun{
