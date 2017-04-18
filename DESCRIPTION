@@ -10,8 +10,7 @@ LazyData: true
 RoxygenNote: 6.0.1
 Suggests: testthat,
     lintr
-Imports: GWASTools,
-    readr,
+Imports: readr,
     dplyr,
     tidyr,
     magrittr
