@@ -4,43 +4,20 @@
 #' https://www.gencodegenes.org/data_format.html
 #'  
 #' @param path Path to the gencode file. 
-#' @param feature The feature type of interest. Must be one of {gene, 
-#'   transcript, exon, CDS, UTR, start_codon, stop_codon, Selenocysteine}. 
-#'   Default = "transcript"
-#' @param attribute The attribute of interest (from the 9th column of the gtf 
-#'   file). Default = "tag basic"
-#' @return A data frame containing the rows from the file that match the 
-#'   specified feature and contain the given attribute. 
+#' @return A tidied tibble
 #' @examples
 #' \dontrun{
 #' import_gencode(path = 'path/to/file.tsv')
 #' }
+#' @importFrom magrittr %>%
 #' @export
 
-import_gencode <- function(path,
-                           feature = "transcript",
-                           attribute = "tag basic"){
+import_gencode <- function(path){
   # check arguments
   if (missing(path)) stop("path not defined")
 
-  if (!(feature %in%
-        c("gene",
-          "transcript",
-          "exon",
-          "CDS",
-          "UTR",
-          "start_codon",
-          "stop_codon",
-          "Selenocysteine"))) {
-    msg <- paste("feature must be one of gene, transcript, exon, CDS, UTR, ",
-                "start_codon, stop_codon, or Selenocysteine", sep = "")
-    stop(msg)
-  }
-
-  if (!is.character(attribute)) stop("attribute must be a string")
-
   # read the file to make a tibble for tidyverse work.
-  gtf <- readr::read_tsv(path,
+  gtf <- suppressMessages(readr::read_tsv(path,
                          comment = "#",
                          col_names = c("seqname",
                                        "source",
@@ -52,4 +29,27 @@ import_gencode <- function(path,
                                        "frame",
                                        "attribute")
                                        )
+  )
+
+  # extract fields of interest
+  rx <- paste('gene_id "(.+?)"; transcript_id "(.+?)"; gene_type "(.+?)";',
+              '.*; gene_name "(.+?)"; transcript_type "(.+?)";',
+              'transcript_status "(.+?)";',
+              'transcript_name "(.+?)";( .*; tag "(.+?)";)*', sep = " ")
+
+  parsed_gtf <- gtf %>%
+  tidyr::extract(attribute,
+          c("gene_id",
+            "transcript_id",
+            "gene_type",
+            "gene_name",
+            "transcript_type",
+            "transcript_status",
+            "transcript_name",
+            "extra",
+            "tag"),
+          rx, remove = FALSE) %>%
+  dplyr::select(-attribute, -extra)
+
+  return(parsed_gtf)
 }

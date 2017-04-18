@@ -4,21 +4,13 @@
 \alias{import_gencode}
 \title{Get the features with attributes of interest from a gencode .gtf file}
 \usage{
-import_gencode(path, feature = "transcript", attribute = "tag basic")
+import_gencode(path)
 }
 \arguments{
 \item{path}{Path to the gencode file.}
-
-\item{feature}{The feature type of interest. Must be one of {gene, 
-transcript, exon, CDS, UTR, start_codon, stop_codon, Selenocysteine}. 
-Default = "transcript"}
-
-\item{attribute}{The attribute of interest (from the 9th column of the gtf 
-file). Default = "tag basic"}
 }
 \value{
-A data frame containing the rows from the file that match the 
-  specified feature and contain the given attribute.
+A tidied tibble
 }
 \description{
 The gtf file format is described at 
