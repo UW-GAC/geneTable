@@ -1,6 +1,6 @@
 context("test_filter_gencode - unit tests")
 
-test_that("filter_gencode returns an error if the file path is not defined", {
+test_that("filter_gencode returns an error if the gtf is not defined", {
             expect_error(filter_gencode(), "gtf not defined")
 })
 
