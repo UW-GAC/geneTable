@@ -2,4 +2,5 @@
 
 export(filter_gencode)
 export(import_gencode)
+export(summarize_tag)
 importFrom(magrittr,"%>%")
