@@ -3,4 +3,6 @@
 export(filter_gencode)
 export(import_gencode)
 export(summarize_tag)
+importFrom(dplyr,filter)
 importFrom(magrittr,"%>%")
+importFrom(tibble,is.tibble)

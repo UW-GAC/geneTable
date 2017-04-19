@@ -2,30 +2,29 @@
 % Please edit documentation in R/filter-gencode.r
 \name{filter_gencode}
 \alias{filter_gencode}
-\title{Get the features with attributes of interest from a gencode .gtf file}
+\title{Filter the gencode tibble by feature and tag.}
 \usage{
-filter_gencode(path, feature = "transcript", attribute = "tag basic")
+filter_gencode(gtf, feature = "transcript", tag = "basic")
 }
 \arguments{
-\item{path}{Path to the gencode file.}
+\item{gtf}{The gencode tibble}
 
 \item{feature}{The feature type of interest. Must be one of {gene, 
 transcript, exon, CDS, UTR, start_codon, stop_codon, Selenocysteine}. 
 Default = "transcript"}
 
-\item{attribute}{The attribute of interest (from the 9th column of the gtf 
-file). Default = "tag basic"}
+\item{tag}{The attribute of interest. Legal tags are listed at
+https://www.gencodegenes.org/gencode_tags.html Default = "basic"}
 }
 \value{
-A data frame containing the rows from the file that match the 
-  specified feature and contain the given attribute.
+A tibble containing the rows matching the feature and tag of interest
 }
 \description{
-The gtf file format is described at 
-https://www.gencodegenes.org/data_format.html
+This function filters a gencode tibble (such as returned from 
+import_gencode() to select the given feature type, taged with the given tag.
 }
 \examples{
 \dontrun{
-filter_gencode(path = 'path/to/file.tsv')
+filter_gencode(gtf = gtf, feature = "transcript", tag = "basic")
 }
 }
