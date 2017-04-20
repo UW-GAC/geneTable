@@ -19,12 +19,12 @@
 #' @export
 
 filter_gencode <- function(gtf,
-                           feature = "transcript",
-                           tag = "basic"){
+                           featurearg = "transcript",
+                           tagarg = "basic"){
   # check arguments
   if (missing(gtf)) stop("gtf not defined")
 
-  if (!(feature %in%
+  if (!(featurearg %in%
         c("gene",
           "transcript",
           "exon",
@@ -37,6 +37,5 @@ filter_gencode <- function(gtf,
                 "start_codon, stop_codon, or Selenocysteine", sep = "")
     stop(msg)
   }
-
-  return(filter(gtf, feature == feature, tag == tag))
+  return(filter(gtf, feature == featurearg, tag == tagarg)) #nolint
 }

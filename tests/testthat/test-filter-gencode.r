@@ -1,6 +1,6 @@
 context("test_filter_gencode - unit tests")
 
-test_that("filter_gencode returns an error if the gtf is not defined", {
+test_that("filter_gencode returns an error if the file path is not defined", {
             expect_error(filter_gencode(), "gtf not defined")
 })
 
@@ -19,8 +19,8 @@ test_that("filter-gencode returns a tibble", {
 
 test_that("filter-gencode returns the right size tibble for known input", {
             gtf <- import_gencode("gencode_test.tsv")
-            expect_equal(dim(dplyr::filter(gtf,
-                                    feature == "exon",
-                                    tag == "basic")),
+            expect_equal(dim(filter_gencode(gtf,
+                                    featurearg = "exon",
+                                    tagarg = "basic")),
                          c(5, 16))
 })
