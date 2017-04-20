@@ -19,8 +19,8 @@ test_that("filter-gencode returns a tibble", {
 
 test_that("filter-gencode returns the right size tibble for known input", {
             gtf <- import_gencode("gencode_test.tsv")
-            expect_equal(dim(dplyr::filter(gtf,
-                                    feature == "exon",
-                                    tag == "basic")),
+            expect_equal(dim(filter_gencode(gtf,
+                                    featurearg = "exon",
+                                    tagarg = "basic")),
                          c(5, 16))
 })
