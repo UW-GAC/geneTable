@@ -6,15 +6,11 @@ test_that(
 })
 
 test_that("define-boundaries returns a tibble", {
-            gtf <- import_gencode("gencode_test.tsv")
-            filtered <- filter(gtf, feature == "exon", tag == "basic")
+            load("filtered_gtf.RData")
             expect_true(is.tibble(define_boundaries(filtered)))
 })
 
-#test_that("filter-gencode returns the right size tibble for known input", {
- #           gtf <- import_gencode("gencode_test.tsv")
- #           expect_equal(dim(dplyr::filter(gtf,
- #                                   feature == "exon",
- #                                   tag == "basic")),
- #                        c(5, 16))
-#})
+test_that("define_boundaries returns the right size tibble for known input", {
+            load("filtered_gtf.RData")
+            expect_equal(dim(define_boundaries(filtered)), c(3, 10))
+})
