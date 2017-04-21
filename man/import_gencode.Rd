@@ -4,10 +4,13 @@
 \alias{import_gencode}
 \title{Get the features with attributes of interest from a gencode .gtf file}
 \usage{
-import_gencode(path)
+import_gencode(path, featuretag = "basic")
 }
 \arguments{
 \item{path}{Path to the gencode file.}
+
+\item{featuretag}{Tag to include in tag variable (defined at
+https://www.gencodegenes.org/gencode_tags.html) Default = "basic"}
 }
 \value{
 A tidied tibble
