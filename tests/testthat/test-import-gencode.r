@@ -8,6 +8,6 @@ test_that("import-gencode returns a tibble", {
             expect_true(tibble::is.tibble(import_gencode("gencode_test.tsv")))
 })
 
-test_that("import-gencode returns 16 columns", {
-            expect_equal(ncol(import_gencode("gencode_test.tsv")), 16)
+test_that("import-gencode returns 30 columns", {
+            expect_equal(ncol(import_gencode("gencode_test.tsv")), 30)
 })
