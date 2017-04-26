@@ -2,22 +2,21 @@
 % Please edit documentation in R/import-gencode.r
 \name{import_gencode}
 \alias{import_gencode}
-\title{Get the features with attributes of interest from a gencode .gtf file}
+\title{Import and tidy a gencode .gtf file}
 \usage{
 import_gencode(path, featuretag = "basic")
 }
 \arguments{
 \item{path}{Path to the gencode file.}
-
-\item{featuretag}{Tag to include in tag variable (defined at
-https://www.gencodegenes.org/gencode_tags.html) Default = "basic"}
 }
 \value{
 A tidied tibble
 }
 \description{
 The gtf file format is described at 
-https://www.gencodegenes.org/data_format.html
+https://www.gencodegenes.org/data_format.html. This function imports a gtf
+and returns a tidied tibble, in which each column is a variable and each
+row is an observation
 }
 \examples{
 \dontrun{
