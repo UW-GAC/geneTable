@@ -1,29 +1,30 @@
-#' Get the features with attributes of interest from a gencode .gtf file 
+#' Filter the gencode tibble by feature and tag.
 #'
-#' The gtf file format is described at 
-#' https://www.gencodegenes.org/data_format.html
-#'  
-#' @param path Path to the gencode file. 
+#' This function filters a gencode tibble (such as returned from 
+#' import_gencode() to select the given feature type, taged with the given tag.
+#'
+#' @param gtf The gencode tibble
 #' @param feature The feature type of interest. Must be one of {gene, 
 #'   transcript, exon, CDS, UTR, start_codon, stop_codon, Selenocysteine}. 
 #'   Default = "transcript"
-#' @param attribute The attribute of interest (from the 9th column of the gtf 
-#'   file). Default = "tag basic"
-#' @return A data frame containing the rows from the file that match the 
-#'   specified feature and contain the given attribute. 
+#' @param tag The attribute of interest. Legal tags are listed at
+#' https://www.gencodegenes.org/gencode_tags.html Default = "basic"
+#' @return A tibble containing the rows matching the feature and tag of interest
 #' @examples
 #' \dontrun{
-#' filter_gencode(path = 'path/to/file.tsv')
+#' filter_gencode(gtf = gtf, feature = "transcript", tag = "basic")
 #' }
+#' @importFrom dplyr filter
+#' @importFrom tibble is.tibble
 #' @export
 
-filter_gencode <- function(path,
-                           feature = "transcript",
-                           attribute = "tag basic"){
+filter_gencode <- function(gtf,
+                           featurearg = "transcript",
+                           tagarg = "basic"){
   # check arguments
-  if (missing(path)) stop("path not defined")
+  if (missing(gtf)) stop("gtf not defined")
 
-  if (!(feature %in%
+  if (!(featurearg %in%
         c("gene",
           "transcript",
           "exon",
@@ -36,20 +37,5 @@ filter_gencode <- function(path,
                 "start_codon, stop_codon, or Selenocysteine", sep = "")
     stop(msg)
   }
-
-  if (!is.character(attribute)) stop("attribute must be a string")
-
-  # read the file to make a tibble for tidyverse work.
-  gtf <- readr::read_tsv(path,
-                         comment = "#",
-                         col_names = c("seqname",
-                                       "source",
-                                       "feature",
-                                       "start",
-                                       "end",
-                                       "score",
-                                       "strand",
-                                       "frame",
-                                       "attribute")
-                                       )
+  return(filter(gtf, feature == featurearg, tag == tagarg)) #nolint
 }
