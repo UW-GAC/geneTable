@@ -4,7 +4,7 @@
 #' https://www.gencodegenes.org/data_format.html. This function imports a gtf
 #' and returns a tidied tibble, in which each column is a variable and each
 #' row is an observation
-#'  
+#'
 #' @param path Path to the gencode file.
 #' @return A tidied tibble
 #' @examples
@@ -20,7 +20,31 @@ import_gencode <- function(path, featuretag = "basic"){
   if (missing(path)) stop("path not defined")
 
   # read the file to make a tibble for tidyverse work.
-  gtf <- suppressMessages(readr::read_tsv(path,
+  raw_gtf <- .read_gtf(path)
+
+  # pick off the required fields from the 9th column.
+  intermediate_gtf <- .pull_required(raw_gtf)
+
+  # Next, peel off the remaining optional fields.
+  messy_gtf <- .parse_optional(intermediate_gtf)
+
+  # Finally, tidy the messy tibble (that has fields with 0 to many entries)
+  tidied_gtf <- .tidy_lists(messy_gtf)
+
+  return(tidied_gtf)
+}
+
+#
+#------------------------------------------------------------------------------
+#
+#' Read GENCODE gtf file to tibble. Assign fields based on tab separation
+#' with no further parsing.
+#'
+#' @param path PATH to gencode file.
+#' @return A tibble
+
+.read_gtf <- function(path){
+  suppressMessages(readr::read_tsv(path,
                          comment = "#",
                          col_names = c("seqname",
                                        "source",
@@ -33,7 +57,19 @@ import_gencode <- function(path, featuretag = "basic"){
                                        "attribute")
                                        )
   )
+}
 
+#
+#------------------------------------------------------------------------------
+#
+#' Preliminary parsing for the attribute column of raw gtf tibble: use regular
+#' expression to pick off the easier required fields, leave rest in "optional"
+#'
+#' @param raw_gtf A tibble from .read_gtf().
+#' @return A tibble with attribute column partially parsed and replaced with
+#' the "optional" column with the remaining unparsed fields.
+
+.pull_required <- function(raw_gtf){
   # define regular expression to use with tidyr::extract to get required fields
   # from attribute column, and split off optional for further tidying
   rx <- paste('gene_id "(.+?)"; ', # required gene_id field in gtf
@@ -52,7 +88,7 @@ import_gencode <- function(path, featuretag = "basic"){
 
   # parse the attribute column of gtf with regular expression - pick off
   # the easier required fields, leave rest in "optional"
-  intermediate_gtf <- gtf %>% extract(attribute,
+  intermediate_gtf <- raw_gtf %>% extract(attribute,
                 c("gene_id",
                   "transcript_id",
                   "gene_type",
@@ -66,18 +102,30 @@ import_gencode <- function(path, featuretag = "basic"){
                   ),
                 rx, remove = FALSE
                 ) %>% select(-attribute)
+  return(intermediate_gtf)
+}
 
-  # Next, peel off the optional fields, one at a time:
+#
+#------------------------------------------------------------------------------
+#
+#' Intermediate parsing - parse optional fields from "optional" column of 
+#' intermediate_gtf (which originated from the 9th column of the GENCODE gtf
+#' file).
+#'
+#' @param intermediate_gtf A tibble from .pull_required().
+#' @return A tibble with columns for optional fields from .gtf file, including
+#' variables that may include multiple values.
 
-  # TODO: refactor this - lots of repeated typing
-  processing_gtf <-
+.parse_optional <- function(intermediate_gtf){
+# TODO: refactor this - lots of repeated typing
+  messy_gtf <-
   intermediate_gtf %>% extract(optional,
                                "tags",
-                               '((?:tag "(?:.+?)"; +)+)',
+                               '((?:tag "(?:.+?)"; ?)+)',
                                remove = FALSE
                                ) %>%
   extract(optional, "ccdsids",
-          '((?:ccsid "(?:.+?)"; +)+)',
+          '((?:ccsid "(?:.+?)"; ?)+)',
           remove = FALSE
   ) %>%
   extract(optional, "havana_gene",
@@ -93,7 +141,7 @@ import_gencode <- function(path, featuretag = "basic"){
           remove = FALSE
   ) %>%
   extract(optional, "onts",
-          '((?:ont "(?:.+?)"; +)+)',
+          '((?:ont "(?:.+?)"; ?)+)',
           remove = FALSE
   ) %>%
   extract(optional, "transcript_support_level",
@@ -123,18 +171,26 @@ import_gencode <- function(path, featuretag = "basic"){
   extract(optional, "remap_substituted_missing_target",
           'remap_substituted_missing_target "(.+?)"',
           remove = TRUE
-  );
+  )
 
-  # next, tidy the fields with 0 to many entries: tags, ccdsids, onts.
-  # split the ones with multiples and then unnest (which adds rows for
-  # observations with more than one tag, ccdsid, or ont)
-  trimmed_gtf <-
-  processing_gtf %>%
-  # remove leading and trailing whitespace
+  return(messy_gtf)
+}
+
+#
+#------------------------------------------------------------------------------
+#
+#' Tidy fields with 0 to many entries: tags, ccdsids, onts.
+#'
+#' @param messy_gtf A tibble from .parse_optional().
+#' @return A tidied tibble with no list-columns.
+
+.tidy_lists <- function(messy_gtf){
+  trimmed_gtf <- messy_gtf %>%
+  # remove leading and trailing whitespace from multi-value fields
   mutate(tags = str_trim(tags, side = "both"),
          ccdsids = str_trim(ccdsids, side = "both"),
          onts = str_trim(onts, side = "both")) %>%
-  # remove quotes, semicolons, and key strings
+  # remove quotes, semicolons, and key strings from multi-value fields
   mutate(tags = str_replace_all(tags,
                                 c('"' = "", # remove "
                                   ";" = "", # remove ;
@@ -159,9 +215,9 @@ import_gencode <- function(path, featuretag = "basic"){
   # (have to do individually b/c different #s in each list)
   unnested_gtf <-
   trimmed_gtf %>%
-  unnest(tags, .drop = FALSE) %>%
   unnest(ccdsids, .drop = FALSE) %>%
   unnest(onts, .drop = FALSE) %>%
+  unnest(tags, .drop = FALSE) %>%
   rename(tag = tags, ccdsid = ccdsids, ont = onts)
 
   return(unnested_gtf)
