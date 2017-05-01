@@ -12,5 +12,5 @@ test_that("define-boundaries returns a tibble", {
 
 test_that("define_boundaries returns the right size tibble for known input", {
             load("filtered_gtf.RData")
-            expect_equal(dim(define_boundaries(filtered)), c(3, 10))
+            expect_equal(dim(define_boundaries(filtered)), c(41, 10))
 })
