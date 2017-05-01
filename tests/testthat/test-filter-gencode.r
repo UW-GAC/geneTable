@@ -22,5 +22,5 @@ test_that("filter-gencode returns the right size tibble for known input", {
             expect_equal(dim(filter_gencode(gtf,
                                     featurearg = "exon",
                                     tagarg = "basic")),
-                         c(5, 16))
+                         c(113, 30))
 })

@@ -4,7 +4,7 @@
 \alias{define_boundaries}
 \title{Define the genomic region spanning all the feature types of interest.}
 \usage{
-define_boundaries(filtered_gtf, feature = "gene_id")
+define_boundaries(filtered_gtf, grouping = "gene_id")
 }
 \arguments{
 \item{filtered_gtf}{The filtered gencode tibble}
