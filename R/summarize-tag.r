@@ -19,5 +19,6 @@
 summarize_tag <- function(gtf, tag = "basic"){
   # check arguments
   if (missing(gtf)) stop("gtf not defined")
+  if (!(tag %in% unique(gtf$tag))) stop ("tag not in gtf tibble")
   return(table(gtf$feature, gtf$tag == tag))
 }
