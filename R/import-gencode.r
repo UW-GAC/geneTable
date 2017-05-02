@@ -11,9 +11,10 @@
 #' \dontrun{
 #' import_gencode(path = 'path/to/file.tsv')
 #' }
-#' @import tidyr
-#' @import stringr
-#' @export
+#' @importFrom tidyr extract
+##' @import tidyr
+##' @import stringr
+##' @export
 
 import_gencode <- function(path, featuretag = "basic"){
   # check arguments
