@@ -20,7 +20,7 @@
 
 filter_gencode <- function(gtf,
                            featurearg = "transcript",
-                           tagarg = "basic"){
+                           tagarg){
   # check arguments
   if (missing(gtf)) stop("gtf not defined")
 
@@ -37,5 +37,9 @@ filter_gencode <- function(gtf,
                 "start_codon, stop_codon, or Selenocysteine", sep = "")
     stop(msg)
   }
-  return(filter(gtf, feature == featurearg, tag == tagarg)) #nolint
+  if (missing(tagarg)) {
+                       return(filter(gtf, feature == featurearg)) #nolint
+  } else {
+         return(filter(gtf, feature == featurearg, tag == tagarg)) #nolint
+  }
 }
