@@ -12,9 +12,11 @@
 #' import_gencode(path = 'path/to/file.tsv')
 #' }
 #' @importFrom tidyr extract
-##' @import tidyr
-##' @import stringr
-##' @export
+#' @importFrom readr read_tsv
+#' @importFrom stringr str_trim
+#' @importFrom stringr str_replace_all
+#' @importFrom tidyr unnest
+#' @export
 
 import_gencode <- function(path, featuretag = "basic"){
   # check arguments
@@ -45,18 +47,18 @@ import_gencode <- function(path, featuretag = "basic"){
 #' @return A tibble
 
 .read_gtf <- function(path){
-  suppressMessages(readr::read_tsv(path,
-                         comment = "#",
-                         col_names = c("seqname",
-                                       "source",
-                                       "feature",
-                                       "start",
-                                       "end",
-                                       "score",
-                                       "strand",
-                                       "frame",
-                                       "attribute")
-                                       )
+  suppressMessages(read_tsv(path,
+                            comment = "#",
+                            col_names = c("seqname",
+                                          "source",
+                                          "feature",
+                                          "start",
+                                          "end",
+                                          "score",
+                                          "strand",
+                                          "frame",
+                                          "attribute")
+                            )
   )
 }
 
