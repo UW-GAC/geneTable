@@ -83,7 +83,7 @@ import_gencode <- function(path, featuretag = "basic"){
                 'transcript_name "(.+?)"; ', # required in gtf
                 "(?:exon_number (.+?); )?", # exon_number (not in all lines)
                 '(?:exon_id "(.+?)"; )?', # exon_id (not in all lines)
-                "level ([123]); ", # required in gtf
+                "level ([123]); ?", # required in gtf
                 "(.*)$", # additional optional fields
                 sep = "") # join regex string without spaces
 
