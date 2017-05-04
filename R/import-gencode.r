@@ -11,8 +11,11 @@
 #' \dontrun{
 #' import_gencode(path = 'path/to/file.tsv')
 #' }
-#' @import tidyr
-#' @import stringr
+#' @importFrom tidyr extract
+#' @importFrom readr read_tsv
+#' @importFrom stringr str_trim
+#' @importFrom stringr str_replace_all
+#' @importFrom tidyr unnest
 #' @export
 
 import_gencode <- function(path, featuretag = "basic"){
@@ -44,18 +47,18 @@ import_gencode <- function(path, featuretag = "basic"){
 #' @return A tibble
 
 .read_gtf <- function(path){
-  suppressMessages(readr::read_tsv(path,
-                         comment = "#",
-                         col_names = c("seqname",
-                                       "source",
-                                       "feature",
-                                       "start",
-                                       "end",
-                                       "score",
-                                       "strand",
-                                       "frame",
-                                       "attribute")
-                                       )
+  suppressMessages(read_tsv(path,
+                            comment = "#",
+                            col_names = c("seqname",
+                                          "source",
+                                          "feature",
+                                          "start",
+                                          "end",
+                                          "score",
+                                          "strand",
+                                          "frame",
+                                          "attribute")
+                            )
   )
 }
 
@@ -82,7 +85,7 @@ import_gencode <- function(path, featuretag = "basic"){
                 'transcript_name "(.+?)"; ', # required in gtf
                 "(?:exon_number (.+?); )?", # exon_number (not in all lines)
                 '(?:exon_id "(.+?)"; )?', # exon_id (not in all lines)
-                "level ([123]); ", # required in gtf
+                "level ([123]); ?", # required in gtf
                 "(.*)$", # additional optional fields
                 sep = "") # join regex string without spaces
 

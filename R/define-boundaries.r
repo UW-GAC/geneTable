@@ -31,8 +31,11 @@
 #' \dontrun{
 #' define_boundaries(filtered_gtf, feature = "gene_id")
 #' }
-#' @import dplyr
-#' @import stringr
+#' @importFrom tibble is.tibble
+##' @import dplyr
+#' @importFrom purrr map_chr
+#' @importFrom tidyr nest
+#' @importFrom stringr str_replace_all
 #' @export
 
 define_boundaries <- function(filtered_gtf,

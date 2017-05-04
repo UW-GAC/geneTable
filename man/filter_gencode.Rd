@@ -4,7 +4,7 @@
 \alias{filter_gencode}
 \title{Filter the gencode tibble by feature and tag.}
 \usage{
-filter_gencode(gtf, featurearg = "transcript", tagarg = "basic")
+filter_gencode(gtf, featurearg = "transcript", tagarg)
 }
 \arguments{
 \item{gtf}{The gencode tibble}
