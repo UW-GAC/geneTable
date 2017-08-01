@@ -13,7 +13,46 @@ devtools::install_github("UW-GAC/genetable")
 
 ## Example
 
-Once we make it, we'll add a basic example which shows you how to solve a common problem!
+This example assumes you've downloaded the gencode gtf file to the working directory.
+
+```R
+# install genetable package
+devtools::install_github("UW-GAC/genetable")
+
+# load libraries for convenience
+library(genetable)
+library(tidyverse)
+
+path <- "gencode.v19.annotation.gtf.gz"
+
+# import the gtf file to a tidy data frame (a tibble)
+# this is slow
+gtf <- import_gencode(path)
+
+# look at the tibble
+glimpse(gtf)
+
+# summarize the number of features by tag.
+summarize_tag(gtf, tag = "basic")
+
+# filter gtf file to return transcript features tagged basic
+basic_transcripts <- filter_gencode(gtf, featurearg = "transcript", tagarg = "basic")
+
+# or filter for features == "gene"
+genes <- filter_gencode(gtf, featurearg = "gene")
+
+# define the boundaries of the feature of interest
+# this is slow
+#gene_bounds <- define_boundaries(basic_transcripts, "gene_id")
+gene_bounds <- define_boundaries(genes, "gene_id")
+
+# can check the resulting tibble for sanity
+glimpse(gene_bounds)
+
+# save to file
+note <- 'This file includes starting and ending ranges for feature = "gene" in the gtf file.'
+save_to_file(gene_bounds, notes = note) # will automatically make file called feature_bounds_DATE.tsv
+```
 
 ## Additional Information
 
