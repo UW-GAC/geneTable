@@ -4,7 +4,7 @@
 \alias{import_gencode}
 \title{Import and tidy a gencode .gtf file}
 \usage{
-import_gencode(path, featuretag = "basic")
+import_gencode(path)
 }
 \arguments{
 \item{path}{Path to the gencode file.}
@@ -13,9 +13,9 @@ import_gencode(path, featuretag = "basic")
 A tidied tibble
 }
 \description{
-The gtf file format is described at 
-https://www.gencodegenes.org/data_format.html. This function imports a gtf
-and returns a tidied tibble, in which each column is a variable and each
+The gtf file format is described at
+https://www.gencodegenes.org/pages/data_format.html. This function imports a
+gtf and returns a tidied tibble, in which each column is a variable and each
 row is an observation
 }
 \examples{

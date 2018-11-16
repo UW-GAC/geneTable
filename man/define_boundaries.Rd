@@ -9,12 +9,12 @@ define_boundaries(filtered_gtf, grouping = "gene_id")
 \arguments{
 \item{filtered_gtf}{The filtered gencode tibble}
 
-\item{feature}{The feature type of interest. Must be a field of the
+\item{grouping}{The feature type of interest. Must be a field of the
 filtered_gtf tibble (e.g., feature %in% names(filtered_gtf).
 Default = "gene_id".}
 }
 \value{
-A tibble containing the regions of interest. Variables in this 
+A tibble containing the regions of interest. Variables in this
  tibble include:
  - chr - chromosome in genome build GRCh37/hg19
  - strand - DNA strand. values {+,-}
@@ -27,12 +27,12 @@ A tibble containing the regions of interest. Variables in this
  - transcript_type - comma seprated values of biotypes of transcripts in a
    genic unit
  - merge_count - number of transcripts merged in the genic unit
- - agg_size - length of the genic unit derived as a difference of agg_end 
+ - agg_size - length of the genic unit derived as a difference of agg_end
    agg_start
 }
 \description{
-This function processes a filtered gencode tibble (such as returned from 
-filter_gencode()) to define the genomic region that spans all the features 
+This function processes a filtered gencode tibble (such as returned from
+filter_gencode()) to define the genomic region that spans all the features
 of interest.
 }
 \details{
