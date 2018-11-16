@@ -1,8 +1,8 @@
-#' Import and tidy a gencode .gtf file 
+#' Import and tidy a gencode .gtf file
 #'
-#' The gtf file format is described at 
-#' https://www.gencodegenes.org/data_format.html. This function imports a gtf
-#' and returns a tidied tibble, in which each column is a variable and each
+#' The gtf file format is described at
+#' https://www.gencodegenes.org/pages/data_format.html. This function imports a
+#' gtf and returns a tidied tibble, in which each column is a variable and each
 #' row is an observation
 #'
 #' @param path Path to the gencode file.
@@ -18,7 +18,7 @@
 #' @importFrom tidyr unnest
 #' @export
 
-import_gencode <- function(path, featuretag = "basic"){
+import_gencode <- function(path){
   # check arguments
   if (missing(path)) stop("path not defined")
 
@@ -76,13 +76,13 @@ import_gencode <- function(path, featuretag = "basic"){
   # define regular expression to use with tidyr::extract to get required fields
   # from attribute column, and split off optional for further tidying
   rx <- paste('gene_id "(.+?)"; ', # required gene_id field in gtf
-                'transcript_id "(.+?)"; ', # required in gtf
+                '(?:transcript_id "(.+?)"; )?', # tranxcript_id (not in all lines)
                 'gene_type "(.+?)";', # required in gtf
                 ".*", # gene_status removed from newer releases
                 'gene_name "(.+?)"; ', # required in gtf
-                'transcript_type "(.+?)";', # required in gtf
+                '(?:transcript_type "(.+?)"; )?', # transcript_type (not in all lines)
                 ".*", # transcript_status removed from newer releases
-                'transcript_name "(.+?)"; ', # required in gtf
+                '(?:transcript_name "(.+?)"; )?', # transcript_name (not in all lines)
                 "(?:exon_number (.+?); )?", # exon_number (not in all lines)
                 '(?:exon_id "(.+?)"; )?', # exon_id (not in all lines)
                 "level ([123]); ?", # required in gtf
@@ -111,7 +111,7 @@ import_gencode <- function(path, featuretag = "basic"){
 #
 #------------------------------------------------------------------------------
 #
-#' Intermediate parsing - parse optional fields from "optional" column of 
+#' Intermediate parsing - parse optional fields from "optional" column of
 #' intermediate_gtf (which originated from the 9th column of the GENCODE gtf
 #' file).
 #'

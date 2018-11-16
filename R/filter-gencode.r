@@ -1,13 +1,13 @@
 #' Filter the gencode tibble by feature and tag.
 #'
-#' This function filters a gencode tibble (such as returned from 
+#' This function filters a gencode tibble (such as returned from
 #' import_gencode() to select the given feature type, taged with the given tag.
 #'
 #' @param gtf The gencode tibble
-#' @param feature The feature type of interest. Must be one of {gene, 
-#'   transcript, exon, CDS, UTR, start_codon, stop_codon, Selenocysteine}. 
+#' @param featurearg The feature type of interest. Must be one of {gene,
+#'   transcript, exon, CDS, UTR, start_codon, stop_codon, Selenocysteine}.
 #'   Default = "transcript"
-#' @param tag The attribute of interest. Legal tags are listed at
+#' @param tagarg The attribute of interest. Legal tags are listed at
 #' https://www.gencodegenes.org/gencode_tags.html Default = "basic"
 #' @return A tibble containing the rows matching the feature and tag of interest
 #' @examples

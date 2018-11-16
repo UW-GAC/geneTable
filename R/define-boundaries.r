@@ -1,17 +1,17 @@
 #' Define the genomic region spanning all the feature types of interest.
 #'
-#' This function processes a filtered gencode tibble (such as returned from 
-#' filter_gencode()) to define the genomic region that spans all the features 
+#' This function processes a filtered gencode tibble (such as returned from
+#' filter_gencode()) to define the genomic region that spans all the features
 #' of interest.
 #'
 #' NOTE: for now, this works for grouping on gene_id. I may generalize later
 #' if we want to group on other features.
 #'
 #' @param filtered_gtf The filtered gencode tibble
-#' @param feature The feature type of interest. Must be a field of the
+#' @param grouping The feature type of interest. Must be a field of the
 #'  filtered_gtf tibble (e.g., feature %in% names(filtered_gtf).
 #'  Default = "gene_id".
-#' @return A tibble containing the regions of interest. Variables in this 
+#' @return A tibble containing the regions of interest. Variables in this
 #'  tibble include:
 #'  - chr - chromosome in genome build GRCh37/hg19
 #'  - strand - DNA strand. values {+,-}
@@ -24,7 +24,7 @@
 #'  - transcript_type - comma seprated values of biotypes of transcripts in a
 #'    genic unit
 #'  - merge_count - number of transcripts merged in the genic unit
-#'  - agg_size - length of the genic unit derived as a difference of agg_end 
+#'  - agg_size - length of the genic unit derived as a difference of agg_end
 #'    agg_start
 
 #' @examples
@@ -127,7 +127,7 @@ define_boundaries <- function(filtered_gtf,
 #' Get feature ranges and add agg_start, agg_end, and merge_count variables
 #' @param reformatted_gtf a filtered gtf field grouped by feature with comma-
 #'   separated lists for the source and transcript_type fields
-#' @return a tibble 
+#' @return a tibble
 
 .add_ranges <- function(reformatted_gtf){
   summary_columns <- reformatted_gtf %>%

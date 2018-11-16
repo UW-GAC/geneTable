@@ -9,18 +9,18 @@ filter_gencode(gtf, featurearg = "transcript", tagarg)
 \arguments{
 \item{gtf}{The gencode tibble}
 
-\item{feature}{The feature type of interest. Must be one of {gene, 
-transcript, exon, CDS, UTR, start_codon, stop_codon, Selenocysteine}. 
+\item{featurearg}{The feature type of interest. Must be one of {gene,
+transcript, exon, CDS, UTR, start_codon, stop_codon, Selenocysteine}.
 Default = "transcript"}
 
-\item{tag}{The attribute of interest. Legal tags are listed at
+\item{tagarg}{The attribute of interest. Legal tags are listed at
 https://www.gencodegenes.org/gencode_tags.html Default = "basic"}
 }
 \value{
 A tibble containing the rows matching the feature and tag of interest
 }
 \description{
-This function filters a gencode tibble (such as returned from 
+This function filters a gencode tibble (such as returned from
 import_gencode() to select the given feature type, taged with the given tag.
 }
 \examples{
